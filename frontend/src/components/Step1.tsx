@@ -1,8 +1,8 @@
 type Props = {
   formData: any;
-  setFormData: (data: any) => any;
+  setFormData: (data: any) => void;
   errors: any;
-  setErrors: any;
+  setErrors: (data: any) => void;
 };
 export default function Step1({
   formData,

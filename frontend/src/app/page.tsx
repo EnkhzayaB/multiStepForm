@@ -14,6 +14,8 @@ export default function Home() {
     phone: string | number;
     password: string | number;
     confirmPassword: string | number;
+    date: string | number;
+    image: string | null;
   };
 
   const [formData, setFormData] = useState<FormDataType>({
@@ -24,7 +26,11 @@ export default function Home() {
     phone: "",
     password: "",
     confirmPassword: "",
+    date: "",
+    image: "",
   });
+  // console.log("image", formData.image);
+
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const validateStep1 = () => {
     const newErrors: { [key: string]: string } = {};
@@ -45,17 +51,77 @@ export default function Home() {
     return Object.keys(newErrors).length === 0;
   };
 
+  const validateStep2 = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!formData.email.toString().trim()) {
+      newErrors.email = "Email is required";
+    }
+
+    if (!formData.phone.toString().trim()) {
+      newErrors.phone = "Phone is required";
+    }
+
+    if (!formData.password.toString().trim()) {
+      newErrors.password = "Password is required";
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const validateStep3 = () => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!formData.date.toString().trim()) {
+      newErrors.date = "date is required";
+    }
+
+    if (!formData.image) {
+      newErrors.image = "Profile image is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   return (
-    <div className="w-full h-full bg-[#f4f4f4] pt-[182px] pr-[480px] pb-[187px] pl-[480px] justify-center flex items-center">
-      <div className="flex w-[480px] h-[655px] p-8 flex-col border rounded-lg bg-white relative">
+    <div className="min-h-screen bg-[#f4f4f4] flex items-center justify-center px-4 sm:px-[480px]">
+      <div
+        className={`flex w-[480px] ${
+          step > 3
+            ? "h-[193px]"
+            : step === 2 && (errors.email || errors.phone)
+            ? "h-[735px]"
+            : "h-[655px]"
+        } p-8 flex-col border rounded-lg bg-white relative`}
+      >
         <div>
           <img src="/Main 1.png" alt="" />
-          <p className="text-[26px] font-semibold text-[#202124]">
-            Join Us! 😎
-          </p>
-          <p className="text-lg font-normal text-[#8e8e8e]">
-            Please provide all current information accurately.
-          </p>
+
+          {step > 3 ? (
+            <p className="text-[26px] font-semibold text-[#202124]">
+              Join Us! 😎
+            </p>
+          ) : (
+            <p className="text-[26px] font-semibold text-[#202124]">
+              You're All Set 🔥
+            </p>
+          )}
+
+          {step > 3 ? (
+            <p className="text-lg font-normal text-[#8e8e8e]">
+              Please provide all current information accurately.
+            </p>
+          ) : (
+            <p className="text-lg font-normal text-[#8e8e8e]">
+              We have received your submission. Thank you!
+            </p>
+          )}
 
           {step === 1 && (
             <Step1
@@ -66,39 +132,55 @@ export default function Home() {
             />
           )}
           {step === 2 && (
-            <Step2 formData={formData} setFormData={setFormData} />
+            <Step2
+              formData={formData}
+              setFormData={setFormData}
+              errors={errors}
+              setErrors={setErrors}
+            />
           )}
-          {step === 3 && <Step3 />}
+          {step === 3 && (
+            <Step3
+              formData={formData}
+              setFormData={setFormData}
+              errors={errors}
+              setErrors={setErrors}
+            />
+          )}
 
-          <div className="flex justify-between absolute bottom-8 gap-2">
-            {step > 1 && (
+          {step <= 3 ? (
+            <div className="flex justify-between absolute bottom-8 gap-2">
+              {step > 1 && (
+                <button
+                  onClick={() => setStep(step - 1)}
+                  className="px-4 py-2 border rounded-[8px] text-gray-600  w-[128px] h-[44px]"
+                >
+                  Back
+                </button>
+              )}
+
               <button
-                onClick={() => setStep(step - 1)}
-                className="px-4 py-2 border rounded-[8px] text-gray-600  w-[128px] h-[44px]"
-              >
-                Back
-              </button>
-            )}
-
-            <button
-              onClick={() => {
-                if (step === 1) {
-                  if (validateStep1()) {
+                onClick={() => {
+                  if (step === 1 && validateStep1()) {
                     setStep(2);
+                  } else if (step === 2 && validateStep2()) {
+                    setStep(3);
+                  } else if (step === 3 && !validateStep3()) {
+                    setStep(4);
                   }
-                } else {
-                  setStep(step + 1);
+                }}
+                className={
+                  step === 1
+                    ? "px-4 py-2 bg-[#121316] text-white rounded-[8px] w-[416px] h-[44px]"
+                    : "px-4 py-2 bg-[#121316] text-white rounded-[8px] w-[280px] h-[44px]"
                 }
-              }}
-              className={
-                step === 1
-                  ? "px-4 py-2 bg-[#121316] text-white rounded-[8px] w-[416px] h-[44px]"
-                  : "px-4 py-2 bg-[#121316] text-white rounded-[8px] w-[280px] h-[44px]"
-              }
-            >
-              {step < 3 ? `Continue ${step}/3` : "Finish"}
-            </button>
-          </div>
+              >
+                {step <= 3 ? `Continue ${step}/3` : "Finish"}
+              </button>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>
