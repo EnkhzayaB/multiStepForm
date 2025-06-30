@@ -35,34 +35,36 @@ export default function Step3({
           Profile image <span className="text-[#e14942]">*</span>
         </p>
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => {
-            const file = e.target.files?.[3]; //songsn zurag
-            if (file) {
-              setFormData({ ...formData, image: file }); // zurgiig hadgaldg
-            }
+        <div className="h-[180px] px-4 flex-col flex justify-center items-center gap-2 bg-[#7F7F800D] mt-3 rounded-[6px]">
+          <div className="rounded-[50px] bg-white flex items-center w-[28px] h-[28px] justify-center">
+            <img
+              src="/image.svg"
+              alt="add image"
+              className="w-[16px] h-[16px]"
+            />
+          </div>
+          <div className="flex justify-center">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0]; //songsn zurag
+                if (file) {
+                  setFormData({ ...formData, image: file }); // zurgiig hadgaldg
+                }
+              }}
+              className="w-full  p-2.5 rounded-[8px] mt-2 outline-none"
+            />
 
-            //error heseg
-            // setFormData({ ...formData, image: e.target.value });
-            // if (errors.image) {
-            //   setErrors((prev: any) => ({ ...prev, image: "" }));
-            // }
-          }}
-          className="w-full border border-[#CBD5E1] p-2.5 rounded-[8px] mt-2"
-        />
-        {/* {errors.image && (
-          <p className="text-red-500 text-sm mt-2.5">{errors.image}</p>
-        )} */}
-
-        {formData.image && (
-          <img
-            src={URL.createObjectURL(formData.image)} //zurgiig haruuldg
-            alt="Preview"
-            className="w-24 h-24 mt-2 rounded-full object-cover"
-          />
-        )}
+            {formData.image && (
+              <img
+                src={URL.createObjectURL(formData.image)} //zurgiig haruuldg
+                alt="Preview"
+                className="w-24 h-24 mt-2 rounded-full object-cover"
+              />
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -81,10 +81,6 @@ export default function Home() {
       newErrors.date = "date is required";
     }
 
-    if (!formData.image) {
-      newErrors.image = "Profile image is required";
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -103,7 +99,7 @@ export default function Home() {
         <div>
           <img src="/Main 1.png" alt="" />
 
-          {step > 3 ? (
+          {step <= 3 ? (
             <p className="text-[26px] font-semibold text-[#202124]">
               Join Us! 😎
             </p>
@@ -113,7 +109,7 @@ export default function Home() {
             </p>
           )}
 
-          {step > 3 ? (
+          {step <= 3 ? (
             <p className="text-lg font-normal text-[#8e8e8e]">
               Please provide all current information accurately.
             </p>
