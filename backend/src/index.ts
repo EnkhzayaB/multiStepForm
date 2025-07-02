@@ -1,12 +1,18 @@
 import express from "express";
+// import mongoose from "mongoose";
+// import stepOneRouter from "./routes/step1.route";
 
-const app = express();
-const PORT = 3000;
+const server = express();
+server.use(express.json());
 
-app.get("/", (_req, res) => {
-  res.send("Hello from TypeScript + Express!");
+const port = 3000;
+
+// server.use("/form", stepOneRouter);
+
+server.get("/", (_request, response) => {
+  response.send("Hello zaya");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
+server.listen(port, () => {
+  console.log(`Server aslaa ${port}`);
 });
