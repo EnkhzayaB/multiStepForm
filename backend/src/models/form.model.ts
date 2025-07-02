@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { model, Schema } from "mongoose";
 
-const from = new Schema({
+const multiForm = new Schema({
   firstName: String,
   lastName: String,
   userName: String,
@@ -13,4 +13,4 @@ const from = new Schema({
   image: String,
 });
 
-export const Form = model("Form", form);
+export const Form = model("Form", multiForm);
